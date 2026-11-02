@@ -1,0 +1,20 @@
+feature,area,priority,original,clone,notes
+Home page,storefront,must,yes,yes,
+Category pages,storefront,must,yes,yes,Six categories
+Search by name brand SKU,storefront,must,yes,yes,Client-side over 25 products
+Product page with gallery specs documents,storefront,must,yes,yes,
+Price inc and ex GST,storefront,must,yes,yes,
+Cart,commerce,must,yes,yes,Stored in the browser
+Card checkout,commerce,must,yes,yes,Needs STRIPE_SECRET_KEY
+Shipping options,commerce,must,yes,yes,Flat rates from the original
+Full catalogue,catalogue,must,yes,no,25 of 7309 products
+Live stock and prices,catalogue,must,yes,no,Snapshot only
+Order management,commerce,must,yes,no,Stripe dashboard only
+PayPal and direct deposit,commerce,should,yes,no,
+Customer accounts and order history,accounts,should,yes,no,
+Product videos,storefront,should,yes,yes,Six clips on the home page
+Reviews,storefront,should,yes,no,
+Promotions and free-shipping thresholds,commerce,should,yes,no,
+Wishlists,accounts,could,yes,no,
+Custom engraving configurator,storefront,could,yes,no,
+Blog and FAQ centre,content,could,yes,no,
