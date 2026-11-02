@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Cart", robots: { index: false } };
 export default function CartPage() {
   return (
     <div className="wrap page">
-      <h1>Your cart</h1>
+      <h1>Cart</h1>
       <CartView products={cards} />
     </div>
   );

@@ -50,22 +50,33 @@ export default async function ProductPage({ params }: Props) {
     <div className="wrap page">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, "\\u003c") }} />
       <nav className="crumbs" aria-label="Breadcrumb">
-        <Link href="/products">Shop</Link> / {cat && <Link href={`/category/${cat.slug}`}>{cat.name}</Link>}
+        <Link href="/">Home</Link>
+        <span>/</span>
+        {cat && (
+          <>
+            <Link href={`/category/${cat.slug}`}>{cat.name}</Link>
+            <span>/</span>
+          </>
+        )}
+        <span style={{ color: "var(--color-text)" }}>{p.sku}</span>
       </nav>
       <div className="pdp">
         <Gallery images={p.images} alt={p.title} />
         <div className="pdp-info">
-          <p className="eyebrow">{p.brand}</p>
-          <h1>{p.title}</h1>
-          {p.subtitle && <p className="muted lead">{p.subtitle}</p>}
-          <p className="mono muted">SKU {p.sku}</p>
-          <p className="price">{money(p.priceCents)}</p>
-          <p className="muted">
-            inc. GST · {money(p.priceExGstCents)} ex. GST ·{" "}
-            <span className={p.inStock ? "stock-in" : "warn"}>{p.inStock ? "In stock" : "Out of stock"}</span>
-          </p>
-          <AddToCart sku={p.sku} inStock={p.inStock} />
-          <ul className="assure muted">
+          <div>
+            <p className="eyebrow">
+              {p.brand} · {p.sku}
+            </p>
+            <h1>{p.title}</h1>
+            {p.subtitle && <p className="muted lead">{p.subtitle}</p>}
+          </div>
+          <div className="price-block">
+            <p className="price">{money(p.priceCents)}</p>
+            <p className="price-sub">inc. GST · {money(p.priceExGstCents)} ex. GST</p>
+          </div>
+          <p className={`stock ${p.inStock ? "stock-in" : "warn"}`}>{p.inStock ? "In stock" : "Out of stock"}</p>
+          <AddToCart sku={p.sku} inStock={p.inStock} priceCents={p.priceCents} />
+          <ul className="assure">
             <li>
               {money(shipping[0].cents)} flat-rate delivery, or free Click &amp; Collect
             </li>

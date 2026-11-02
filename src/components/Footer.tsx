@@ -8,8 +8,10 @@ export function Footer() {
     <footer className="footer">
       <div className="wrap footer-grid">
         <div>
-          <Logo />
-          <p className="muted footer-tag">{site.tagline}</p>
+          <span className="footer-logo">
+            <Logo />
+          </span>
+          <p className="footer-tag">{site.tagline}</p>
         </div>
         <div>
           <h2>Shop</h2>
@@ -20,21 +22,23 @@ export function Footer() {
           ))}
         </div>
         <div>
-          <h2>Help</h2>
+          <h2>Information</h2>
           <Link href="/shipping">Shipping</Link>
           <Link href="/returns">Returns</Link>
           <Link href="/contact">Contact</Link>
           <Link href="/privacy">Privacy</Link>
         </div>
         <div>
-          <h2>Talk to us</h2>
-          <a href={site.phoneHref}>{site.phone}</a>
+          <h2>Customer service</h2>
+          <a href={site.phoneHref} className="phone">
+            {site.phone}
+          </a>
           {site.email && <a href={`mailto:${site.email}`}>{site.email}</a>}
-          <p className="muted">{site.hours}</p>
-          <p className="muted">{site.address}</p>
+          <p>{site.hours}</p>
+          <p>Click &amp; Collect · {site.address}</p>
         </div>
       </div>
-      <div className="wrap footer-base muted">
+      <div className="wrap footer-base">
         © {new Date().getFullYear()} {site.name}. All prices in AUD and include GST.
       </div>
     </footer>

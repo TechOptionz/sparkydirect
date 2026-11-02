@@ -5,6 +5,7 @@ import { useState } from "react";
 import type { ProductCardData } from "@/lib/catalog";
 import { money, shipping, site } from "@/lib/site";
 import { useCart } from "./Cart";
+import { Corners } from "./Corners";
 
 export function CartView({ products }: { products: ProductCardData[] }) {
   const { lines, setQty, ready } = useCart();
@@ -17,6 +18,9 @@ export function CartView({ products }: { products: ProductCardData[] }) {
   });
   const subtotal = rows.reduce((sum, r) => sum + r.p.priceCents * r.qty, 0);
   const blocked = rows.some((r) => !r.p.inStock);
+  const FREE_AT = 33000;
+  const toFree = Math.max(0, FREE_AT - subtotal);
+  const pct = Math.min(100, Math.round((subtotal / FREE_AT) * 100));
 
   async function checkout() {
     setBusy(true);
@@ -50,7 +54,17 @@ export function CartView({ products }: { products: ProductCardData[] }) {
 
   return (
     <div className="cart">
-      <ul className="cart-lines">
+      <div className="cart-main">
+        <div className="ship-meter">
+          <div>
+            <span>{toFree ? `${money(toFree)} away from free shipping` : "You qualify for free shipping"}</span>
+            <strong>{money(FREE_AT)}</strong>
+          </div>
+          <div className="bar">
+            <i style={{ width: `${pct}%` }} />
+          </div>
+        </div>
+        <ul className="cart-lines">
         {rows.map(({ p, qty }) => (
           <li key={p.sku}>
             <div className="tile cart-thumb">{p.image && <img src={p.image} alt="" />}</div>
@@ -75,18 +89,21 @@ export function CartView({ products }: { products: ProductCardData[] }) {
             <p className="cart-total">{money(p.priceCents * qty)}</p>
           </li>
         ))}
-      </ul>
-      <aside className="summary">
-        <h2>Summary</h2>
+        </ul>
+      </div>
+      <aside className="summary blueprint">
+        <Corners />
+        <h2>Order summary</h2>
         <div className="summary-row">
-          <span>Subtotal, inc. GST</span>
+          <span>Total inc. GST</span>
           <strong>{money(subtotal)}</strong>
         </div>
         <p className="muted">
           Delivery from {money(shipping[0].cents)}, or free Click &amp; Collect. You choose at checkout.
         </p>
-        <button className="btn btn-full" onClick={checkout} disabled={busy || blocked}>
-          {busy ? "Starting checkout…" : "Check out"}
+        <button className="btn btn-full blueprint" onClick={checkout} disabled={busy || blocked}>
+          <Corners />
+          {busy ? "Starting checkout…" : "Checkout"}
         </button>
         {error && (
           <p className="warn" role="alert">
@@ -94,6 +111,15 @@ export function CartView({ products }: { products: ProductCardData[] }) {
           </p>
         )}
       </aside>
+      <div className="stickybar stickybar-cart">
+        <div>
+          <strong>{money(subtotal)}</strong>
+          <span>Total inc GST</span>
+        </div>
+        <button className="btn" onClick={checkout} disabled={busy || blocked}>
+          {busy ? "Starting…" : "Checkout"}
+        </button>
+      </div>
     </div>
   );
 }

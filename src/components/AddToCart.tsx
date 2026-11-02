@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { money } from "@/lib/site";
 import { useCart } from "./Cart";
+import { Corners } from "./Corners";
 
-export function AddToCart({ sku, inStock }: { sku: string; inStock: boolean }) {
+export function AddToCart({ sku, inStock, priceCents }: { sku: string; inStock: boolean; priceCents: number }) {
   const { add } = useCart();
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
@@ -21,6 +23,12 @@ export function AddToCart({ sku, inStock }: { sku: string; inStock: boolean }) {
       </div>
     );
   }
+
+  const addNow = () => {
+    add(sku, qty);
+    setAdded(true);
+  };
+
   return (
     <div className="buy">
       <div className="buy-row">
@@ -34,13 +42,8 @@ export function AddToCart({ sku, inStock }: { sku: string; inStock: boolean }) {
             onChange={(e) => setQty(Math.min(99, Math.max(1, Number(e.target.value) || 1)))}
           />
         </label>
-        <button
-          className="btn"
-          onClick={() => {
-            add(sku, qty);
-            setAdded(true);
-          }}
-        >
+        <button className="btn blueprint" onClick={addNow}>
+          <Corners />
           Add to cart
         </button>
       </div>
@@ -51,6 +54,17 @@ export function AddToCart({ sku, inStock }: { sku: string; inStock: boolean }) {
           </>
         )}
       </p>
+      <div className="stickybar">
+        <div>
+          <strong>{money(priceCents * qty)}</strong>
+          <span>
+            {qty} × {money(priceCents)}
+          </span>
+        </div>
+        <button className="btn" onClick={addNow}>
+          Add to cart
+        </button>
+      </div>
     </div>
   );
 }
